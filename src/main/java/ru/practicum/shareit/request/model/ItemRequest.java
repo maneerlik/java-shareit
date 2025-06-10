@@ -1,10 +1,12 @@
-package ru.practicum.shareit.item.model;
+package ru.practicum.shareit.request.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 /**
- * Класс {@code Item} - модель вещи
+ * Класс {@code ItemRequest} - запрос на размещение вещи
  *
  * <p>Аннотация {@code @Data} автоматически генерирует геттеры, сеттеры, методы {@code equals()},
  * {@code hashCode()}, а также {@code toString()}. Аннотация {@code @NoArgsConstructor}
@@ -13,20 +15,18 @@ import lombok.NoArgsConstructor;
  *
  * <p>Поля класса:</p>
  * <ul>
- *   <li>{@code id} - уникальный идентификатор вещи</li>
- *   <li>{@code name} - название вещи</li>
- *   <li>{@code description} - описание вещи</li>
- *   <li>{@code available} - статус доступности для аренды</li>
- *   <li>{@code ownerId} - id владельца вещи</li>
+ *   <li>{@code id} - уникальный идентификатор запроса</li>
+ *   <li>{@code userId} - пользователь разместивший запрос</li>
+ *   <li>{@code description} - текст запроса на размещение вещи</li>
+ *   <li>{@code createdDate} - дата создания запроса</li>
  * </ul>
  */
 
 @Data
 @NoArgsConstructor
-public class Item {
+public class ItemRequest {
     private Long id;
-    private String name;
-    private String description;
-    private Boolean available;
-    private Long ownerId;
+    private Long userId;
+    private String description;;
+    private LocalDateTime createdDate;
 }

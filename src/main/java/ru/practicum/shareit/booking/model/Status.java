@@ -1,10 +1,10 @@
-package ru.practicum.shareit.item.model;
+package ru.practicum.shareit.booking.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Класс {@code Item} - модель вещи
+ * Класс {@code Status} - статус бронирования
  *
  * <p>Аннотация {@code @Data} автоматически генерирует геттеры, сеттеры, методы {@code equals()},
  * {@code hashCode()}, а также {@code toString()}. Аннотация {@code @NoArgsConstructor}
@@ -13,20 +13,14 @@ import lombok.NoArgsConstructor;
  *
  * <p>Поля класса:</p>
  * <ul>
- *   <li>{@code id} - уникальный идентификатор вещи</li>
- *   <li>{@code name} - название вещи</li>
- *   <li>{@code description} - описание вещи</li>
- *   <li>{@code available} - статус доступности для аренды</li>
- *   <li>{@code ownerId} - id владельца вещи</li>
+ *   <li>{@code id} - уникальный идентификатор статуса</li>
+ *   <li>{@code name} - статус</li>
  * </ul>
  */
 
 @Data
 @NoArgsConstructor
-public class Item {
+public class Status {
     private Long id;
     private String name;
-    private String description;
-    private Boolean available;
-    private Long ownerId;
 }
