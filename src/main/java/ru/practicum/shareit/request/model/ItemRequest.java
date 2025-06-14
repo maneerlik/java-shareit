@@ -2,6 +2,7 @@ package ru.practicum.shareit.request.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
 
@@ -16,9 +17,9 @@ import java.time.LocalDateTime;
  * <p>Поля класса:</p>
  * <ul>
  *   <li>{@code id} - уникальный идентификатор запроса</li>
- *   <li>{@code userId} - пользователь разместивший запрос</li>
  *   <li>{@code description} - текст запроса на размещение вещи</li>
- *   <li>{@code createdDate} - дата создания запроса</li>
+ *   <li>{@code requestor} - пользователь разместивший запрос</li>
+ *   <li>{@code created} - дата создания запроса</li>
  * </ul>
  */
 
@@ -26,7 +27,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ItemRequest {
     private Long id;
-    private Long userId;
     private String description;;
-    private LocalDateTime createdDate;
+    private User requestor;
+    private LocalDateTime created;
 }

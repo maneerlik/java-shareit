@@ -2,6 +2,8 @@ package ru.practicum.shareit.booking.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
 
@@ -16,11 +18,11 @@ import java.time.LocalDateTime;
  * <p>Поля класса:</p>
  * <ul>
  *   <li>{@code id} - уникальный идентификатор бронирования</li>
- *   <li>{@code itemId} - идентификатор бронируемой вещи</li>
- *   <li>{@code bookerId} - идентификатор бронирующего пользователя</li>
  *   <li>{@code startDate} - дата начала бронирования</li>
  *   <li>{@code endDate} - дата окончания бронирования</li>
- *   <li>{@code statusId} - идентификатор статуса брони</li>
+ *   <li>{@code item} - бронируемая вещь</li>
+ *   <li>{@code booker} - бронирующий пользователь</li>
+ *   <li>{@code status} - статус брони</li>
  * </ul>
  */
 
@@ -28,9 +30,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Booking {
     private Long id;
-    private Long itemId;
-    private Long bookerId;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private Long statusId;
+    private Item item;
+    private User booker;
+    private BookingStatus status;
 }

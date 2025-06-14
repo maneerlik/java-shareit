@@ -1,9 +1,13 @@
 package ru.practicum.shareit.booking.dto;
 
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.item.model.Item;
 
 import java.time.LocalDateTime;
 
@@ -12,10 +16,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookingDto {
-    private Long id;
-    private Long itemId;
-    private Long bookerId;
+    @NotNull
+    private Item itemId;
+
+    @NotNull
+    @FutureOrPresent
     private LocalDateTime startDate;
+
+    @NotNull
+    @Future
     private LocalDateTime endDate;
-    private String statusName;
 }
