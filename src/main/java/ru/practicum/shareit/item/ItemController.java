@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemDtoResponse;
 import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.ArrayList;
@@ -31,18 +33,30 @@ public class ItemController {
         return itemService.createItem(userId, itemDto);
     }
 
+    @PostMapping("/{itemId}/comment")
+    public CommentDto addComment(
+            @RequestHeader("X-Sharer-User-Id") Long userId,
+            @PathVariable Long itemId,
+            @RequestBody CommentDto commentDto
+    ) {
+        return itemService.addComment(userId, itemId, commentDto);
+    }
+
     @GetMapping("/{itemId}")
-    public ItemDto getItem(@PathVariable Long itemId) {
-        return itemService.getItem(itemId);
+    public ItemDtoResponse getItem(
+            @RequestHeader("X-Sharer-User-Id") Long userId,
+            @PathVariable Long itemId
+    ) {
+        return itemService.getItem(userId, itemId);
     }
 
     @GetMapping
-    public List<ItemDto> getUserItems(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public List<ItemDtoResponse> getUserItems(@RequestHeader("X-Sharer-User-Id") Long userId) {
         return new ArrayList<>(itemService.getUserItems(userId));
     }
 
     @GetMapping("/search")
-    public List<ItemDto> getItemsByPattern(@RequestParam("text") String pattern) {
+    public List<ItemDtoResponse> getItemsByPattern(@RequestParam("text") String pattern) {
         return new ArrayList<>(itemService.getItemsByPattern(pattern));
     }
 

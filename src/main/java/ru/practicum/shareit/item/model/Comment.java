@@ -1,15 +1,13 @@
 package ru.practicum.shareit.item.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import ru.practicum.shareit.request.model.ItemRequest;
+import lombok.*;
 import ru.practicum.shareit.user.model.User;
 
+import java.time.LocalDateTime;
+
 /**
- * Класс {@code Item} - сущность вещи в системе
+ * Класс {@code Comment} - сущность отзыва в системе
  *
  * <p>Аннотации {@code @Getter}, {@code @Setter} и {@code @ToString} автоматически генерируют
  * соответствующие методы. Аннотация {@code @NoArgsConstructor} создает конструктор по умолчанию,
@@ -22,43 +20,42 @@ import ru.practicum.shareit.user.model.User;
  *
  * <p>Поля класса:</p>
  * <ul>
- *   <li>{@code id} - уникальный идентификатор вещи</li>
- *   <li>{@code name} - название вещи</li>
- *   <li>{@code description} - описание вещи</li>
- *   <li>{@code available} - статус доступности для аренды</li>
- *   <li>{@code owner} - владелец вещи</li>
- *   <li>{@code request} - запрос по которому была размещена вещь</li>
+ *   <li>{@code id} - уникальный идентификатор отзыва</li>
+ *   <li>{@code text} - текст отзыва</li>
+ *   <li>{@code item} - вещь на которую оставлен отзыв</li>
+ *   <li>{@code author} - автор отзыва</li>
+ *   <li>{@code created} - дата создания комментария</li>
  * </ul>
  */
 
 @Entity
 @NoArgsConstructor
 @Getter @Setter @ToString
-@Table(name = "items")
-public class Item {
+@Table(name = "comments")
+public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String description;
-
-    @Column(name = "is_available")
-    private Boolean available;
+    private String text;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
-    private User owner;
+    private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
-    private ItemRequest request;
+    private User author;
+
+    @Column(name = "created_at")
+    private LocalDateTime created;
 
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Item)) return false;
-        return id != null && id.equals(((Item) o).getId());
+        if (!(o instanceof Comment)) return false;
+        return id != null && id.equals(((Comment) o).getId());
     }
 
     @Override

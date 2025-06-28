@@ -1,14 +1,32 @@
 spring:
-  sql:
-    init:
-      mode: always
+  application:
+    name: shareit
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/shareit
+    username: dbuser
+    password: "12345"               # пароль в кавычках, особенно если содержит спецсимволы
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 30000     # таймаут соединения
+      maximum-pool-size: 10         # максимальный размер пула соединений
 
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: none                # отключает любые автоматические действия со стороны Hibernate
+#      ddl-auto: validate           # проверить совпадают ли структура БД и сущности
     properties:
       hibernate:
-        format_sql: true
+        show_sql: true              # включить вывод SQL-запросов, генерируемых Hibernate, в логи приложения
+        format_sql: true            # форматирует выводимый SQL перед тем, как он попадает в логи
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+server:
+  port: 8080
 
 logging:
   level:
@@ -16,10 +34,6 @@ logging:
     org.springframework.transaction: INFO
     org.springframework.transaction.interceptor: TRACE
     org.springframework.orm.jpa.JpaTransactionManager: DEBUG
-
-# TODO Append connection to DB
-# datasource:
-#   driver-class-name:
-#   url:
-#   username:
-#   password:
+    org.hibernate.sql: DEBUG
+    org.hibernate.type: TRACE
+    org.hibernate.orm.jdbc.bind: TRACE
