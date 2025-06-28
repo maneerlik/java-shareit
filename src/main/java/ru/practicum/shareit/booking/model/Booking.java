@@ -32,7 +32,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 @Table(name = "bookings")
 public class Booking {
     @Id

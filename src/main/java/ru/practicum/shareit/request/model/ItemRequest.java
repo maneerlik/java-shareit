@@ -29,7 +29,9 @@ import ru.practicum.shareit.user.model.User;
 
 @Entity
 @NoArgsConstructor
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 @Table(name = "requests")
 public class ItemRequest {
     @Id

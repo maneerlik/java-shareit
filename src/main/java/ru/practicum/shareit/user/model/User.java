@@ -25,7 +25,9 @@ import lombok.*;
 
 @Entity
 @NoArgsConstructor
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 @Table(name = "users")
 public class User {
     @Id
