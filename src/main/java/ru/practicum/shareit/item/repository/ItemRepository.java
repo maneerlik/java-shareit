@@ -7,12 +7,31 @@ import ru.practicum.shareit.item.model.Item;
 
 import java.util.List;
 
+/**
+ * Репозиторий для работы с {@code Item}
+ *
+ * <p>Расширяет {@link JpaRepository}. Предоставляет стандартные CRUD-операции и
+ * специализированные методы для поиска вещей</p>
+ */
+
 public interface ItemRepository extends JpaRepository<Item, Long> {
+    /**
+     * Поиск всех вещей по ID владельца
+     *
+     * @param id ID владельца вещи
+     * @return лист вещей
+     */
     List<Item> findAllByOwnerId(Long id);
 
+    /**
+     * Поиск всех вещей по подстроке (шаблону) входящей
+     * в имя {@code name} или описание {@code description} вещи
+     *
+     * @param text подстрока (шаблон поиска)
+     * @return лист вещей
+     */
     @Query(" select i from Item i " +
             "where upper(i.name) like upper(concat('%', :text, '%')) " +
             "   or upper(i.description) like upper(concat('%', :text, '%'))")
     List<Item> search(@Param("text") String text);
-
 }
