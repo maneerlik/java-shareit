@@ -1,14 +1,13 @@
-package ru.practicum.shareit.request.model;
+package ru.practicum.shareit.item.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import ru.practicum.shareit.user.model.User;
 
+import java.time.LocalDateTime;
+
 /**
- * Класс {@code ItemRequest} - сущность запроса на размещение вещи в системе
+ * Класс {@code Comment} - сущность отзыва в системе
  *
  * <p>Аннотации {@code @Getter}, {@code @Setter} и {@code @ToString} автоматически генерируют
  * соответствующие методы. Аннотация {@code @NoArgsConstructor} создает конструктор по умолчанию,
@@ -21,9 +20,11 @@ import ru.practicum.shareit.user.model.User;
  *
  * <p>Поля класса:</p>
  * <ul>
- *   <li>{@code id} - уникальный идентификатор запроса</li>
- *   <li>{@code description} - текст запроса на размещение вещи</li>
- *   <li>{@code requestor} - пользователь разместивший запрос</li>
+ *   <li>{@code id} - уникальный идентификатор отзыва</li>
+ *   <li>{@code text} - текст отзыва</li>
+ *   <li>{@code item} - вещь на которую оставлен отзыв</li>
+ *   <li>{@code author} - автор отзыва</li>
+ *   <li>{@code created} - дата создания комментария</li>
  * </ul>
  */
 
@@ -32,24 +33,31 @@ import ru.practicum.shareit.user.model.User;
 @Getter
 @Setter
 @ToString
-@Table(name = "requests")
-public class ItemRequest {
+@Table(name = "comments")
+public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String description;
+    private String text;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
-    private User requestor;
+    private Item item;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private User author;
+
+    @Column(name = "created_at")
+    private LocalDateTime created;
 
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ItemRequest)) return false;
-        return id != null && id.equals(((ItemRequest) o).getId());
+        if (!(o instanceof Comment)) return false;
+        return id != null && id.equals(((Comment) o).getId());
     }
 
     @Override

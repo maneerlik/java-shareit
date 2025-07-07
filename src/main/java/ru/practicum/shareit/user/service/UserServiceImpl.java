@@ -3,6 +3,7 @@ package ru.practicum.shareit.user.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
@@ -17,6 +18,7 @@ import static ru.practicum.shareit.user.mapper.UserMapper.*;
 
 @Service
 @Slf4j
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
@@ -27,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional
     public UserDto createUser(UserDto userDto) {
         log.info("Creating user: {}", userDto);
         User user = toUser(userDto);
@@ -55,22 +58,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto updateUser(Long id, UserDto userDto) {
         log.info("Updating user with id: {}", id);
-        userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id));
-
-        User updatingUser = new User();
-        updatingUser.setId(id);
+        User updatingUser = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
 
         if (Objects.nonNull(userDto.getEmail())) updatingUser.setEmail(userDto.getEmail());
         if (Objects.nonNull(userDto.getName())) updatingUser.setName(userDto.getName());
 
-        User updatedUser = userRepository.update(updatingUser);
-        log.info("User updated: {}", updatedUser);
-        return toUserDto(updatedUser);
+        log.info("User updated: {}", updatingUser);
+        return toUserDto(updatingUser);
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long id) {
         log.info("Deleting user with id: {}", id);
         userRepository.deleteById(id);
