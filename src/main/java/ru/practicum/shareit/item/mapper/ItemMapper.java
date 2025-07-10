@@ -30,6 +30,7 @@ public class ItemMapper {
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.getAvailable())
+                .requestId(item.getRequest() != null ? item.getRequest().getId() : null)
                 .build();
 
         if (Objects.nonNull(item.getRequest())) itemDto.setRequestId(item.getRequest().getId());

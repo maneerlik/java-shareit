@@ -5,7 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Класс {@code ItemRequest} - сущность запроса на размещение вещи в системе
@@ -24,6 +30,8 @@ import ru.practicum.shareit.user.model.User;
  *   <li>{@code id} - уникальный идентификатор запроса</li>
  *   <li>{@code description} - текст запроса на размещение вещи</li>
  *   <li>{@code requestor} - пользователь разместивший запрос</li>
+ *   <li>{@code created} - дата создания запроса</li>
+ *   <li>{@code items} - вещи которые были созданы в ответ на запрос</li>
  * </ul>
  */
 
@@ -43,6 +51,14 @@ public class ItemRequest {
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private User requestor;
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private LocalDateTime created;
+
+    @OneToMany
+    @JoinColumn(name = "request_id")
+    private List<Item> items = new ArrayList<>();
 
 
     @Override

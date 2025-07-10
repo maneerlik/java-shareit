@@ -16,6 +16,14 @@ import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
     /**
+     * Поиск всех вещей по ID запроса на размещение вещи
+     *
+     * @param requestId ID запроса на размещение вещи
+     * @return лист вещей
+     */
+    List<Item> findByRequestId(Long requestId);
+
+    /**
      * Поиск всех вещей по ID владельца
      *
      * @param id ID владельца вещи
