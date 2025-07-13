@@ -57,33 +57,33 @@ public class ItemRequestTest {
 
     @Test
     void testEqualsAndHashCode() {
-        ItemRequest itemRequest1 = new ItemRequest();
-        itemRequest1.setId(1L);
+        ItemRequest itemRequestOne = new ItemRequest();
+        itemRequestOne.setId(1L);
 
-        ItemRequest itemRequest2 = new ItemRequest();
-        itemRequest2.setId(1L);
+        ItemRequest itemRequestTwo = new ItemRequest();
+        itemRequestTwo.setId(1L);
 
-        ItemRequest itemRequest3 = new ItemRequest();
-        itemRequest3.setId(2L);
+        ItemRequest itemRequestThree = new ItemRequest();
+        itemRequestThree.setId(2L);
 
-        assertEquals(itemRequest1, itemRequest1);
+        assertEquals(itemRequestOne, itemRequestOne);
 
-        assertEquals(itemRequest1, itemRequest2);
-        assertEquals(itemRequest2, itemRequest1);
+        assertEquals(itemRequestOne, itemRequestTwo);
+        assertEquals(itemRequestTwo, itemRequestOne);
 
-        ItemRequest itemRequest4 = new ItemRequest();
-        itemRequest4.setId(1L);
-        assertEquals(itemRequest1, itemRequest2);
-        assertEquals(itemRequest2, itemRequest4);
-        assertEquals(itemRequest1, itemRequest4);
+        ItemRequest itemRequestFour = new ItemRequest();
+        itemRequestFour.setId(1L);
+        assertEquals(itemRequestOne, itemRequestTwo);
+        assertEquals(itemRequestTwo, itemRequestFour);
+        assertEquals(itemRequestOne, itemRequestFour);
 
-        assertEquals(itemRequest1, itemRequest2);
+        assertEquals(itemRequestOne, itemRequestTwo);
 
-        assertNotEquals(null, itemRequest1);
+        assertNotEquals(null, itemRequestOne);
 
-        assertNotEquals(itemRequest1, itemRequest3);
+        assertNotEquals(itemRequestOne, itemRequestThree);
 
-        assertEquals(itemRequest1.hashCode(), itemRequest2.hashCode());
+        assertEquals(itemRequestOne.hashCode(), itemRequestTwo.hashCode());
     }
 
     @Test

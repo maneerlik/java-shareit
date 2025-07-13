@@ -73,64 +73,64 @@ public class ItemServiceTest {
 
     @Test
     void testEqualsAndHashCode_CommentEntity() {
-        Comment comment1 = new Comment();
-        comment1.setId(1L);
+        Comment commentOne = new Comment();
+        commentOne.setId(1L);
 
-        Comment comment2 = new Comment();
-        comment2.setId(1L);
+        Comment commentTwo = new Comment();
+        commentTwo.setId(1L);
 
-        Comment comment3 = new Comment();
-        comment3.setId(2L);
+        Comment commentThree = new Comment();
+        commentThree.setId(2L);
 
-        assertEquals(comment1, comment1);
+        assertEquals(commentOne, commentOne);
 
-        assertEquals(comment1, comment2);
-        assertEquals(comment2, comment1);
+        assertEquals(commentOne, commentTwo);
+        assertEquals(commentTwo, commentOne);
 
-        Comment comment4 = new Comment();
-        comment4.setId(1L);
-        assertEquals(comment1, comment2);
-        assertEquals(comment2, comment4);
-        assertEquals(comment1, comment4);
+        Comment commentFour = new Comment();
+        commentFour.setId(1L);
+        assertEquals(commentOne, commentTwo);
+        assertEquals(commentTwo, commentFour);
+        assertEquals(commentOne, commentFour);
 
-        assertEquals(comment1, comment2);
+        assertEquals(commentOne, commentTwo);
 
-        assertNotEquals(null, comment1);
+        assertNotEquals(null, commentOne);
 
-        assertNotEquals(comment1, comment3);
+        assertNotEquals(commentOne, commentThree);
 
-        assertEquals(comment1.hashCode(), comment2.hashCode());
+        assertEquals(commentOne.hashCode(), commentTwo.hashCode());
     }
 
     @Test
     void testEqualsAndHashCode_ItemEntity() {
-        Item Item1 = new Item();
-        Item1.setId(1L);
+        Item itemOne = new Item();
+        itemOne.setId(1L);
 
-        Item Item2 = new Item();
-        Item2.setId(1L);
+        Item itemTwo = new Item();
+        itemTwo.setId(1L);
 
-        Item Item3 = new Item();
-        Item3.setId(2L);
+        Item itemThree = new Item();
+        itemThree.setId(2L);
 
-        assertEquals(Item1, Item1);
+        assertEquals(itemOne, itemOne);
 
-        assertEquals(Item1, Item2);
-        assertEquals(Item2, Item1);
+        assertEquals(itemOne, itemTwo);
+        assertEquals(itemTwo, itemOne);
 
-        Item Item4 = new Item();
-        Item4.setId(1L);
-        assertEquals(Item1, Item2);
-        assertEquals(Item2, Item4);
-        assertEquals(Item1, Item4);
+        Item itemFour = new Item();
+        itemFour.setId(1L);
+        assertEquals(itemOne, itemTwo);
+        assertEquals(itemTwo, itemFour);
+        assertEquals(itemOne, itemFour);
 
-        assertEquals(Item1, Item2);
+        assertEquals(itemOne, itemTwo);
 
-        assertNotEquals(null, Item1);
+        assertNotEquals(null, itemOne);
 
-        assertNotEquals(Item1, Item3);
+        assertNotEquals(itemOne, itemThree);
 
-        assertEquals(Item1.hashCode(), Item2.hashCode());
+        assertEquals(itemOne.hashCode(), itemTwo.hashCode());
     }
     
     @Test

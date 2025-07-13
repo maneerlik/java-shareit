@@ -56,33 +56,33 @@ public class BookingServiceTest {
 
     @Test
     void testEqualsAndHashCode() {
-        Booking booking1 = new Booking();
-        booking1.setId(1L);
+        Booking bookingOne = new Booking();
+        bookingOne.setId(1L);
 
-        Booking booking2 = new Booking();
-        booking2.setId(1L);
+        Booking bookingTwo = new Booking();
+        bookingTwo.setId(1L);
 
-        Booking booking3 = new Booking();
-        booking3.setId(2L);
+        Booking bookingThree = new Booking();
+        bookingThree.setId(2L);
 
-        assertEquals(booking1, booking1);
+        assertEquals(bookingOne, bookingOne);
 
-        assertEquals(booking1, booking2);
-        assertEquals(booking2, booking1);
+        assertEquals(bookingOne, bookingTwo);
+        assertEquals(bookingTwo, bookingOne);
 
-        Booking booking4 = new Booking();
-        booking4.setId(1L);
-        assertEquals(booking1, booking2);
-        assertEquals(booking2, booking4);
-        assertEquals(booking1, booking4);
+        Booking bookingFour = new Booking();
+        bookingFour.setId(1L);
+        assertEquals(bookingOne, bookingTwo);
+        assertEquals(bookingTwo, bookingFour);
+        assertEquals(bookingOne, bookingFour);
 
-        assertEquals(booking1, booking2);
+        assertEquals(bookingOne, bookingTwo);
 
-        assertNotEquals(null, booking1);
+        assertNotEquals(null, bookingOne);
 
-        assertNotEquals(booking1, booking3);
+        assertNotEquals(bookingOne, bookingThree);
 
-        assertEquals(booking1.hashCode(), booking2.hashCode());
+        assertEquals(bookingOne.hashCode(), bookingTwo.hashCode());
     }
 
     @Test
