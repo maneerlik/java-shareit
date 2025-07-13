@@ -132,7 +132,7 @@ public class ItemServiceTest {
 
         assertEquals(itemOne.hashCode(), itemTwo.hashCode());
     }
-    
+
     @Test
     void createItem_ValidItem_ReturnsItemDto() {
         Long userId = 1L;
