@@ -33,17 +33,11 @@ import static org.mockito.Mockito.when;
 public class ItemRequestTest {
     private AutoCloseable mocks;
 
-    @Mock
-    private ItemRequestRepository itemRequestRepository;
+    @Mock private ItemRequestRepository itemRequestRepository;
+    @Mock private UserRepository userRepository;
+    @Mock private ItemRepository itemRepository;
 
-    @Mock
-    private UserRepository userRepository;
-
-    @Mock
-    private ItemRepository itemRepository;
-
-    @InjectMocks
-    private ItemRequestServiceImpl itemRequestService;
+    @InjectMocks private ItemRequestServiceImpl itemRequestService;
 
     @BeforeEach
     void setUp() {

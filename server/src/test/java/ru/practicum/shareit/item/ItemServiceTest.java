@@ -42,26 +42,14 @@ import static org.mockito.ArgumentMatchers.anyLong;
 public class ItemServiceTest {
     private AutoCloseable mocks;
 
-    @Mock
-    private ItemRepository itemRepository;
+    @Mock private ItemRepository itemRepository;
+    @Mock private UserRepository userRepository;
+    @Mock private BookingRepository bookingRepository;
+    @Mock private CommentRepository commentRepository;
+    @Mock private ItemRequestRepository requestRepository;
+    @Mock private UserService userService;
 
-    @Mock
-    private UserRepository userRepository;
-
-    @Mock
-    private BookingRepository bookingRepository;
-
-    @Mock
-    private CommentRepository commentRepository;
-
-    @Mock
-    private ItemRequestRepository requestRepository;
-
-    @Mock
-    private UserService userService;
-
-    @InjectMocks
-    private ItemServiceImpl itemService;
+    @InjectMocks private ItemServiceImpl itemService;
 
     @BeforeEach
     void setUp() {

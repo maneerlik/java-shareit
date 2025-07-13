@@ -24,8 +24,7 @@ import static org.mockito.Mockito.when;
 public class UserServiceTest {
     private AutoCloseable mocks;
 
-    @Mock
-    private UserRepository userRepository;
+    @Mock private UserRepository userRepository;
 
     @InjectMocks
     private UserServiceImpl userService;

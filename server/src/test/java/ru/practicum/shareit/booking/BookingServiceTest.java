@@ -3,13 +3,17 @@ package ru.practicum.shareit.booking;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Sort;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoResponse;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.booking.service.BookingServiceImpl;
@@ -27,8 +31,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 public class BookingServiceTest {
@@ -54,28 +57,28 @@ public class BookingServiceTest {
 
     @BeforeEach
     void setUp() {
-       mocks = MockitoAnnotations.openMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
 
-       user = new User();
-       user.setId(USER_ID);
+        user = new User();
+        user.setId(USER_ID);
 
-       otherUser = new User();
-       otherUser.setId(OTHER_USER_ID);
+        otherUser = new User();
+        otherUser.setId(OTHER_USER_ID);
 
-       item = new Item();
-       item.setId(ITEM_ID);
-       item.setAvailable(Boolean.TRUE);
+        item = new Item();
+        item.setId(ITEM_ID);
+        item.setAvailable(Boolean.TRUE);
 
-       booking = new Booking();
-       booking.setId(BOOKING_ID);
-       booking.setItem(item);
-       booking.setBooker(user);
-       booking.setStatus(BookingStatus.WAITING);
+        booking = new Booking();
+        booking.setId(BOOKING_ID);
+        booking.setItem(item);
+        booking.setBooker(user);
+        booking.setStatus(BookingStatus.WAITING);
 
-       bookingDto = new BookingDto();
-       bookingDto.setItemId(ITEM_ID);
-       bookingDto.setStart(LocalDateTime.now().plusDays(1));
-       bookingDto.setEnd(LocalDateTime.now().plusDays(2));
+        bookingDto = new BookingDto();
+        bookingDto.setItemId(ITEM_ID);
+        bookingDto.setStart(LocalDateTime.now().plusDays(1));
+        bookingDto.setEnd(LocalDateTime.now().plusDays(2));
     }
 
     @AfterEach
@@ -175,7 +178,7 @@ public class BookingServiceTest {
         item.setOwner(otherUser);
         when(bookingRepository.findById(BOOKING_ID)).thenReturn(Optional.of(booking));
 
-        assertThatThrownBy(() -> bookingService.updateBookingStatus(USER_ID, BOOKING_ID, true))
+        assertThatThrownBy(() -> bookingService.updateBookingStatus(USER_ID, BOOKING_ID, Boolean.TRUE))
                 .isInstanceOf(ValidationException.class)
                 .hasMessageContaining("Only owner can update item booking status");
     }
@@ -205,7 +208,7 @@ public class BookingServiceTest {
 
     @Test
     void getUserBookings_WhenValidRequest_ShouldReturnListOfBookings() {
-        when(userRepository.existsById(USER_ID)).thenReturn(true);
+        when(userRepository.existsById(USER_ID)).thenReturn(Boolean.TRUE);
         when(bookingRepository.findByBookerId(anyLong(), any())).thenReturn(List.of(booking));
 
         Collection<BookingDtoResponse> responses = bookingService.getUserBookings(USER_ID, DEFAULT_STATE);
@@ -216,6 +219,60 @@ public class BookingServiceTest {
                 .first()
                 .extracting(BookingDtoResponse::getId)
                 .isEqualTo(BOOKING_ID);
+    }
+
+    @ParameterizedTest
+    @EnumSource(BookingState.class)
+    void getUserBookings_ShouldWorkForAllStates(BookingState state) {
+        when(userRepository.existsById(USER_ID)).thenReturn(Boolean.TRUE);
+
+        when(bookingRepository.findByBookerId(eq(USER_ID), any(Sort.class))).thenReturn(List.of(booking));
+        when(bookingRepository.findByBookerIdAndStartDateIsAfter(
+                eq(USER_ID), any(LocalDateTime.class), any(Sort.class))).thenReturn(List.of(booking)
+        );
+        when(bookingRepository.findByBookerIdAndEndDateIsBefore(
+                eq(USER_ID), any(LocalDateTime.class), any(Sort.class))).thenReturn(List.of(booking)
+        );
+        when(bookingRepository.findByBookerIdAndStartDateIsBeforeAndEndDateIsAfter(
+                eq(USER_ID), any(LocalDateTime.class), any(LocalDateTime.class), any(Sort.class))).thenReturn(List.of(booking)
+        );
+        when(bookingRepository.findByBookerIdAndStatus(
+                eq(USER_ID), eq(BookingStatus.WAITING), any(Sort.class))).thenReturn(List.of(booking)
+        );
+        when(bookingRepository.findByBookerIdAndStatus(
+                eq(USER_ID), eq(BookingStatus.REJECTED), any(Sort.class))).thenReturn(List.of(booking)
+        );
+
+        Collection<BookingDtoResponse> result = bookingService.getUserBookings(USER_ID, state.name());
+
+        assertThat(result).hasSize(1);
+    }
+
+    @ParameterizedTest
+    @EnumSource(BookingState.class)
+    void getOwnerBookings_ShouldWorkForAllStates(BookingState state) {
+        when(userRepository.existsById(USER_ID)).thenReturn(true);
+
+        when(bookingRepository.findByItemOwnerId(eq(USER_ID), any(Sort.class))).thenReturn(List.of(booking));
+        when(bookingRepository.findByItemOwnerIdAndStartDateIsAfter(
+                eq(USER_ID), any(LocalDateTime.class), any(Sort.class))).thenReturn(List.of(booking)
+        );
+        when(bookingRepository.findByItemOwnerIdAndEndDateIsBefore(
+                eq(USER_ID), any(LocalDateTime.class), any(Sort.class))).thenReturn(List.of(booking)
+        );
+        when(bookingRepository.findByItemOwnerIdAndStartDateIsBeforeAndEndDateIsAfter(
+                eq(USER_ID), any(LocalDateTime.class), any(LocalDateTime.class), any(Sort.class))).thenReturn(List.of(booking)
+        );
+        when(bookingRepository.findByItemOwnerIdAndStatus(
+                eq(USER_ID), eq(BookingStatus.WAITING), any(Sort.class))).thenReturn(List.of(booking)
+        );
+        when(bookingRepository.findByItemOwnerIdAndStatus(
+                eq(USER_ID), eq(BookingStatus.REJECTED), any(Sort.class))).thenReturn(List.of(booking)
+        );
+
+        Collection<BookingDtoResponse> result = bookingService.getOwnerBookings(USER_ID, state.name());
+
+        assertThat(result).hasSize(1);
     }
 
     @Test
