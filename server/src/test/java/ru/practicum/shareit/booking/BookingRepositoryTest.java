@@ -53,6 +53,6 @@ public class BookingRepositoryTest {
         List<Booking> bookings = bookingRepository.findByBookerId(booker.getId(), Sort.unsorted()).stream().toList();
 
         assertEquals(1, bookings.size());
-        assertEquals(booking.getId(), bookings.get(0).getId());
+        assertEquals(booking.getId(), bookings.getFirst().getId());
     }
 }

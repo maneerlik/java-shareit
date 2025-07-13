@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
+import ru.practicum.shareit.request.mapper.ItemRequestMapper;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.request.service.ItemRequestServiceImpl;
@@ -180,5 +181,31 @@ public class ItemRequestTest {
         assertNotNull(result);
         assertEquals(itemRequest.getDescription(), result.getDescription());
         assertEquals(1, result.getItems().size());
+    }
+
+    @Test
+    void testToItemRequest() {
+        ItemRequestDto itemRequestDto = new ItemRequestDto();
+        itemRequestDto.setDescription("Request Description");
+
+        ItemRequest itemRequest = ItemRequestMapper.toItemRequest(itemRequestDto);
+
+        assertNotNull(itemRequest);
+        assertEquals(itemRequestDto.getDescription(), itemRequest.getDescription());
+    }
+
+    @Test
+    void testToItemRequestDto() {
+        ItemRequest itemRequest = new ItemRequest();
+        itemRequest.setId(1L);
+        itemRequest.setDescription("Request Description");
+        itemRequest.setCreated(LocalDateTime.now());
+
+        ItemRequestDto itemRequestDto = ItemRequestMapper.toItemRequestDto(itemRequest);
+
+        assertNotNull(itemRequestDto);
+        assertEquals(itemRequest.getId(), itemRequestDto.getId());
+        assertEquals(itemRequest.getDescription(), itemRequestDto.getDescription());
+        assertEquals(itemRequest.getCreated(), itemRequestDto.getCreated());
     }
 }

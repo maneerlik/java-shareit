@@ -7,11 +7,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoResponse;
+import ru.practicum.shareit.item.mapper.CommentMapper;
+import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
@@ -350,5 +353,124 @@ public class ItemServiceTest {
         Long itemId = 1L;
         doNothing().when(itemRepository).deleteById(itemId);
         assertDoesNotThrow(() -> itemService.deleteItem(itemId));
+    }
+
+    @Test
+    void testToComment() {
+        CommentDto commentDto = new CommentDto();
+        commentDto.setText("Comment");
+        commentDto.setCreated(LocalDateTime.now());
+
+        Item item = new Item();
+        item.setId(1L);
+
+        User user = new User();
+        user.setId(1L);
+
+        Comment comment = CommentMapper.toComment(commentDto, item, user);
+
+        assertNotNull(comment);
+        assertEquals(commentDto.getText(), comment.getText());
+        assertEquals(item, comment.getItem());
+        assertEquals(user, comment.getAuthor());
+        assertEquals(commentDto.getCreated(), comment.getCreated());
+    }
+
+    @Test
+    void testToCommentDto() {
+        Item item = new Item();
+        item.setId(1L);
+
+        User user = new User();
+        user.setId(1L);
+        user.setName("User");
+
+        Comment comment = new Comment();
+        comment.setId(1L);
+        comment.setText("Comment");
+        comment.setItem(item);
+        comment.setAuthor(user);
+        comment.setCreated(LocalDateTime.now());
+
+        CommentDto commentDto = CommentMapper.toCommentDto(comment);
+
+        assertNotNull(commentDto);
+        assertEquals(comment.getId(), commentDto.getId());
+        assertEquals(comment.getText(), commentDto.getText());
+        assertEquals(comment.getAuthor().getName(), commentDto.getAuthorName());
+        assertEquals(comment.getCreated(), commentDto.getCreated());
+    }
+
+    @Test
+    void testToItem() {
+        ItemDto itemDto = new ItemDto();
+        itemDto.setName("Item");
+        itemDto.setDescription("Description");
+        itemDto.setAvailable(true);
+
+        Item item = ItemMapper.toItem(itemDto);
+
+        assertNotNull(item);
+        assertEquals(itemDto.getName(), item.getName());
+        assertEquals(itemDto.getDescription(), item.getDescription());
+        assertEquals(itemDto.getAvailable(), item.getAvailable());
+    }
+
+    @Test
+    void testToItemDto() {
+        Item item = new Item();
+        item.setId(1L);
+        item.setName("Item");
+        item.setDescription("Description");
+        item.setAvailable(true);
+
+        ItemDto itemDto = ItemMapper.toItemDto(item);
+
+        assertNotNull(itemDto);
+        assertEquals(item.getId(), itemDto.getId());
+        assertEquals(item.getName(), itemDto.getName());
+        assertEquals(item.getDescription(), itemDto.getDescription());
+        assertEquals(item.getAvailable(), itemDto.getAvailable());
+    }
+
+    @Test
+    void testToItemDtoResponse() {
+        User owner = new User();
+        owner.setId(1L);
+        owner.setName("Owner");
+
+        Item item = new Item();
+        item.setId(1L);
+        item.setName("Item");
+        item.setDescription("Description");
+        item.setAvailable(true);
+        item.setOwner(owner);
+
+        Booking booking = new Booking();
+        booking.setId(1L);
+        booking.setStartDate(LocalDateTime.now());
+        booking.setEndDate(LocalDateTime.now().plusDays(1));
+        booking.setItem(item);
+        booking.setBooker(owner);
+        booking.setStatus(BookingStatus.WAITING);
+
+        Comment comment = new Comment();
+        comment.setId(1L);
+        comment.setText("Comment");
+        comment.setItem(item);
+        comment.setAuthor(owner);
+        comment.setCreated(LocalDateTime.now());
+
+        ItemDtoResponse itemDtoResponse = ItemMapper.toItemDtoResponse(
+                item, Collections.singletonList(booking), Collections.singletonList(comment)
+        );
+
+        assertNotNull(itemDtoResponse);
+        assertEquals(item.getId(), itemDtoResponse.getId());
+        assertEquals(item.getName(), itemDtoResponse.getName());
+        assertEquals(item.getDescription(), itemDtoResponse.getDescription());
+        assertEquals(item.getAvailable(), itemDtoResponse.getAvailable());
+        assertEquals(1, itemDtoResponse.getBookings().size());
+        assertEquals(1, itemDtoResponse.getComments().size());
     }
 }

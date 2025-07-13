@@ -50,6 +50,7 @@ public class BookingControllerTest {
         bookingDtoResponse.setEnd(bookingDto.getEnd());
     }
 
+
     @Test
     void createBooking_ValidBooking_ReturnsBookingDtoResponse() throws Exception {
         when(bookingService.createBooking(anyLong(), any(BookingDto.class))).thenReturn(bookingDtoResponse);

@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.service.UserServiceImpl;
@@ -42,33 +43,33 @@ public class UserServiceTest {
 
     @Test
     void testEqualsAndHashCode() {
-        User user1 = new User();
-        user1.setId(1L);
+        User userOne = new User();
+        userOne.setId(1L);
 
-        User user2 = new User();
-        user2.setId(1L);
+        User userTwo = new User();
+        userTwo.setId(1L);
 
-        User user3 = new User();
-        user3.setId(2L);
+        User userThree = new User();
+        userThree.setId(2L);
 
-        assertEquals(user1, user1);
+        assertEquals(userOne, userOne);
 
-        assertEquals(user1, user2);
-        assertEquals(user2, user1);
+        assertEquals(userOne, userTwo);
+        assertEquals(userTwo, userOne);
 
-        User user4 = new User();
-        user4.setId(1L);
-        assertEquals(user1, user2);
-        assertEquals(user2, user4);
-        assertEquals(user1, user4);
+        User userFour = new User();
+        userFour.setId(1L);
+        assertEquals(userOne, userTwo);
+        assertEquals(userTwo, userFour);
+        assertEquals(userOne, userFour);
 
-        assertEquals(user1, user2);
+        assertEquals(userOne, userTwo);
 
-        assertNotEquals(null, user1);
+        assertNotEquals(null, userOne);
 
-        assertNotEquals(user1, user3);
+        assertNotEquals(userOne, userThree);
 
-        assertEquals(user1.hashCode(), user2.hashCode());
+        assertEquals(userOne.hashCode(), userTwo.hashCode());
     }
 
     @Test
@@ -151,5 +152,35 @@ public class UserServiceTest {
         Long userId = 1L;
         doNothing().when(userRepository).deleteById(userId);
         assertDoesNotThrow(() -> userService.deleteUser(userId));
+    }
+
+    @Test
+    void testToUser() {
+        UserDto userDto = new UserDto();
+        userDto.setId(1L);
+        userDto.setName("User");
+        userDto.setEmail("user@example.com");
+
+        User user = UserMapper.toUser(userDto);
+
+        assertNotNull(user);
+        assertEquals(userDto.getId(), user.getId());
+        assertEquals(userDto.getName(), user.getName());
+        assertEquals(userDto.getEmail(), user.getEmail());
+    }
+
+    @Test
+    void testToUserDto() {
+        User user = new User();
+        user.setId(1L);
+        user.setName("User");
+        user.setEmail("user@example.com");
+
+        UserDto userDto = UserMapper.toUserDto(user);
+
+        assertNotNull(userDto);
+        assertEquals(user.getId(), userDto.getId());
+        assertEquals(user.getName(), userDto.getName());
+        assertEquals(user.getEmail(), userDto.getEmail());
     }
 }
