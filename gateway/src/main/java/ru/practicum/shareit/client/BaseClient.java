@@ -8,6 +8,12 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Базовый класс, реализующий REST-клиент для взаимодействия с сервером ShareIt.
+ * Предоставляет общие методы для выполнения HTTP-запросов (GET, POST, PUT, PATCH, DELETE)
+ * с поддержкой заголовков, параметров и тела запроса
+ */
+
 public class BaseClient {
     protected final RestTemplate rest;
 

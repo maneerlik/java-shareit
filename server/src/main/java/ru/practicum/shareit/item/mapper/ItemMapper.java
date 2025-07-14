@@ -14,6 +14,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class ItemMapper {
+
+    /**
+     * Don't let anyone instantiate this class.
+     */
+    private ItemMapper() {
+
+    }
+
+
     public static Item toItem(ItemDto itemDto) {
         Item item = new Item();
 

@@ -11,6 +11,15 @@ import static ru.practicum.shareit.item.mapper.ItemMapper.toItemDto;
 import static ru.practicum.shareit.user.mapper.UserMapper.toUserDto;
 
 public class BookingMapper {
+
+    /**
+     * Don't let anyone instantiate this class.
+     */
+    private BookingMapper() {
+
+    }
+
+
     public static Booking toBooking(User user, Item item, BookingDto bookingDto) {
         Booking booking = new Booking();
 

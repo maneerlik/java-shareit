@@ -6,6 +6,15 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
 public class CommentMapper {
+
+    /**
+     * Don't let anyone instantiate this class.
+     */
+    private CommentMapper() {
+
+    }
+
+
     public static Comment toComment(CommentDto commentDto, Item item, User author) {
         Comment comment = new Comment();
 

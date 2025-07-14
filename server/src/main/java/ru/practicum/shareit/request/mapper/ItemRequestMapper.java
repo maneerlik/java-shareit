@@ -4,6 +4,15 @@ import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.model.ItemRequest;
 
 public class ItemRequestMapper {
+
+    /**
+     * Don't let anyone instantiate this class.
+     */
+    private ItemRequestMapper() {
+
+    }
+
+
     public static ItemRequest toItemRequest(ItemRequestDto itemRequestDto) {
         ItemRequest itemRequest = new ItemRequest();
         itemRequest.setDescription(itemRequestDto.getDescription());
